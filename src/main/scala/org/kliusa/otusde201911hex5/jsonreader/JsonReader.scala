@@ -1,6 +1,7 @@
 package org.kliusa.otusde201911hex5.jsonreader
 
 import org.apache.spark.sql.SparkSession
+import org.json4s._
 
 object JsonReader extends App{
 
@@ -18,6 +19,6 @@ object JsonReader extends App{
   for ( s <- jsonRdd.top(5)) println(s)
   println("------------------")
 
-
+  val jsn = parse()
 
 }
