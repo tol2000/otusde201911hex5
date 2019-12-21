@@ -8,4 +8,5 @@ scalaVersion := "2.11.12"
 
 libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.4.4"
 libraryDependencies += "org.json4s" %% "json4s-native" % "3.6.7"
+//libraryDependencies += "org.json4s" %% "json4s-jackson" % "3.2.11"
 libraryDependencies += "org.scala-lang" % "scala-xml" % "2.11.0-M4"

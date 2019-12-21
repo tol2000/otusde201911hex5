@@ -1,7 +1,10 @@
 package org.kliusa.otusde201911hex5.jsonreader
 
+import org.apache.spark.Partitioner
 import org.apache.spark.sql.SparkSession
 import org.json4s._
+import org.json4s.jackson.JsonMethods._
+import org.json4s.jackson.Serialization
 
 object JsonReader extends App{
 
@@ -12,13 +15,31 @@ object JsonReader extends App{
 
   val jsonRdd = sparkContext.textFile(jsonName)
 
-  println("Tolyan's json megaparser! :)")
+  println("Tolyan's json megaparser! :)");
   println("JSON name: " + jsonName)
-  println("Top raw lines:")
-  println("------------------")
-  for ( s <- jsonRdd.top(5)) println(s)
-  println("------------------")
+  println("JSON RDD count: " + jsonRdd.count())
 
-  val jsn = parse()
+  implicit val formats = { Serialization.formats(FullTypeHints(List(classOf[WineObj]))) }
+
+  var i = 0
+
+  for ( wineRow <- jsonRdd ) {
+
+    try {
+
+      val parsedRow = parse(wineRow).extract[WineObj]
+      if (parsedRow.getId % 10000 == 0) println(parsedRow) // Печатаем выборочно
+      i += 1
+
+    } catch {
+
+      case ex: Exception => {
+        println(s"EXCEPTION AT STEP ${i}\nValue: ${wineRow}")
+        sys.exit(1)
+      }
+
+    }
+
+  }
 
 }
