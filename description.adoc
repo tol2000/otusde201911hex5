@@ -28,94 +28,144 @@
 
 == Результат
 
+От клонирования репозитория во временный каталог (для чистоты эксперимента) до запуска джарника в спарке.
+
 [source, bash]
 ----
+[tolic@tolfedor tempwrk]$ git clone git@github.com:tol2000/otusde201911hex5.git
+Cloning into 'otusde201911hex5'...
+remote: Enumerating objects: 291, done.
+remote: Counting objects: 100% (291/291), done.
+remote: Compressing objects: 100% (62/62), done.
+remote: Total 291 (delta 218), reused 271 (delta 198), pack-reused 0
+Receiving objects: 100% (291/291), 4.16 MiB | 4.40 MiB/s, done.
+Resolving deltas: 100% (218/218), done.
+[tolic@tolfedor tempwrk]$ cd otusde201911hex5/
 [tolic@tolfedor otusde201911hex5]$ pwd
 /home/tolic/tol/work/tempwrk/otusde201911hex5
 [tolic@tolfedor otusde201911hex5]$ ll
-total 26968
--rw-rw-r--. 1 tolic tolic      724 Dec 23 00:02 build.sbt
--rw-rw-r--. 1 tolic tolic  5766714 Dec 23 00:03 otusde201911hex5-assembly-1.jar
-drwxrwxr-x. 4 tolic tolic     4096 Dec 23 00:03 project
-drwxrwxr-x. 3 tolic tolic     4096 Dec 23 00:02 src
-drwxrwxr-x. 4 tolic tolic     4096 Dec 23 00:08 target
--rw-rw-r--. 1 tolic tolic 21829157 Dec 23 00:02 winemag-data-130k-v2.json
-[tolic@tolfedor otusde201911hex5]$ ~/spark-2.4.4-bin-hadoop2.7/bin/spark-submit --master local[*] --class org.kliusa.otusde201911hex5.jsonreader.JsonReader otusde201911hex5-assembly-1.jar winemag-data-130k-v2.json
-19/12/23 00:13:32 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+total 21352
+-rw-rw-r--. 1 tolic tolic      397 Dec 23 00:38 build.sbt
+-rw-rw-r--. 1 tolic tolic    18089 Dec 23 00:38 description.adoc
+drwxrwxr-x. 2 tolic tolic     4096 Dec 23 00:38 project
+drwxrwxr-x. 3 tolic tolic     4096 Dec 23 00:38 src
+-rw-rw-r--. 1 tolic tolic 21829157 Dec 23 00:38 winemag-data-130k-v2.json
+[tolic@tolfedor otusde201911hex5]$ sbt assembly
+[info] Loading global plugins from /home/tolic/.sbt/1.0/plugins
+[info] Loading settings for project otusde201911hex5-build from assembly.sbt ...
+[info] Loading project definition from /home/tolic/tol/work/tempwrk/otusde201911hex5/project
+[info] Loading settings for project otusde201911hex5 from build.sbt ...
+[info] Set current project to otusde201911hex5 (in build file:/home/tolic/tol/work/tempwrk/otusde201911hex5/)
+[info] Compiling 2 Scala sources to /home/tolic/tol/work/tempwrk/otusde201911hex5/target/scala-2.11/classes ...
+[info] Including: scala-library-2.11.12.jar
+[info] Checking every *.class/*.jar file's SHA-1.
+[info] Merging files...
+[warn] Merging 'META-INF/MANIFEST.MF' with strategy 'discard'
+[warn] Strategy 'discard' was applied to a file
+[info] SHA-1: 955f429b84de4815aa8e1524f24cb5a2a0d841f4
+[success] Total time: 13 s, completed Dec 23, 2019 12:40:06 AM
+[tolic@tolfedor otusde201911hex5]$
+[tolic@tolfedor otusde201911hex5]$ ~/spark-2.4.4-bin-hadoop2.7/bin/spark-submit --master local[*] --class org.kliusa.otusde201911hex5.jsonreader.JsonReader target/scala-2.11/otusde201911hex5-assembly-1.jar winemag-data-130k-v2.json                                                       19/12/23 00:42:08 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
-19/12/23 00:13:32 INFO SparkContext: Running Spark version 2.4.4
-19/12/23 00:13:32 INFO SparkContext: Submitted application: org.kliusa.otusde201911hex5.jsonreader.JsonReader
-19/12/23 00:13:32 INFO SecurityManager: Changing view acls to: tolic
-19/12/23 00:13:32 INFO SecurityManager: Changing modify acls to: tolic
-19/12/23 00:13:32 INFO SecurityManager: Changing view acls groups to:
-19/12/23 00:13:32 INFO SecurityManager: Changing modify acls groups to:
-19/12/23 00:13:32 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(tolic); groups with view permissions: Set(); users  with modify permissions: Set(tolic); groups with modify permissions: Set()
-19/12/23 00:13:33 INFO Utils: Successfully started service 'sparkDriver' on port 36701.
-19/12/23 00:13:33 INFO SparkEnv: Registering MapOutputTracker
-19/12/23 00:13:33 INFO SparkEnv: Registering BlockManagerMaster
-19/12/23 00:13:33 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
-19/12/23 00:13:33 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
-19/12/23 00:13:33 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-5e583cf0-cafb-41f7-9aea-1cb89c77d76f
-19/12/23 00:13:33 INFO MemoryStore: MemoryStore started with capacity 366.3 MB
-19/12/23 00:13:33 INFO SparkEnv: Registering OutputCommitCoordinator
-19/12/23 00:13:33 INFO Utils: Successfully started service 'SparkUI' on port 4040.
-19/12/23 00:13:33 INFO SparkUI: Bound SparkUI to 0.0.0.0, and started at http://tolfedor:4040
-19/12/23 00:13:33 INFO SparkContext: Added JAR file:/home/tolic/tol/work/tempwrk/otusde201911hex5/otusde201911hex5-assembly-1.jar at spark://tolfedor:36701/jars/otusde201911hex5-assembly-1.jar with timestamp 1577052813597
-19/12/23 00:13:33 INFO Executor: Starting executor ID driver on host localhost
-19/12/23 00:13:33 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 45509.
-19/12/23 00:13:33 INFO NettyBlockTransferService: Server created on tolfedor:45509
-19/12/23 00:13:33 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
-19/12/23 00:13:33 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, tolfedor, 45509, None)
-19/12/23 00:13:33 INFO BlockManagerMasterEndpoint: Registering block manager tolfedor:45509 with 366.3 MB RAM, BlockManagerId(driver, tolfedor, 45509, None)
-19/12/23 00:13:33 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, tolfedor, 45509, None)
-19/12/23 00:13:33 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, tolfedor, 45509, None)
-19/12/23 00:13:34 INFO MemoryStore: Block broadcast_0 stored as values in memory (estimated size 236.7 KB, free 366.1 MB)
-19/12/23 00:13:35 INFO MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 22.9 KB, free 366.0 MB)
-19/12/23 00:13:35 INFO BlockManagerInfo: Added broadcast_0_piece0 in memory on tolfedor:45509 (size: 22.9 KB, free: 366.3 MB)
-19/12/23 00:13:35 INFO SparkContext: Created broadcast 0 from textFile at JsonReader.scala:24
+19/12/23 00:42:08 INFO SparkContext: Running Spark version 2.4.4
+19/12/23 00:42:08 INFO SparkContext: Submitted application: org.kliusa.otusde201911hex5.jsonreader.JsonReader
+19/12/23 00:42:09 INFO SecurityManager: Changing view acls to: tolic
+19/12/23 00:42:09 INFO SecurityManager: Changing modify acls to: tolic
+19/12/23 00:42:09 INFO SecurityManager: Changing view acls groups to:
+19/12/23 00:42:09 INFO SecurityManager: Changing modify acls groups to:
+19/12/23 00:42:09 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(tolic); groups with view permissions: Set(); users  with modify permissions: Set(tolic); groups with modify permissions: Set()
+19/12/23 00:42:09 INFO Utils: Successfully started service 'sparkDriver' on port 43637.
+19/12/23 00:42:09 INFO SparkEnv: Registering MapOutputTracker
+19/12/23 00:42:09 INFO SparkEnv: Registering BlockManagerMaster
+19/12/23 00:42:09 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+19/12/23 00:42:09 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+19/12/23 00:42:09 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-75bbdbea-4f48-4b6b-9751-0c2301411b4a
+19/12/23 00:42:09 INFO MemoryStore: MemoryStore started with capacity 366.3 MB
+19/12/23 00:42:09 INFO SparkEnv: Registering OutputCommitCoordinator
+19/12/23 00:42:10 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+19/12/23 00:42:10 INFO SparkUI: Bound SparkUI to 0.0.0.0, and started at http://tolfedor:4040
+19/12/23 00:42:10 INFO SparkContext: Added JAR file:/home/tolic/tol/work/tempwrk/otusde201911hex5/target/scala-2.11/otusde201911hex5-assembly-1.jar at spark://tolfedor:43637/jars/otusde201911hex5-assembly-1.jar with timestamp 1577054530183
+19/12/23 00:42:10 INFO Executor: Starting executor ID driver on host localhost
+19/12/23 00:42:10 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 41107.
+19/12/23 00:42:10 INFO NettyBlockTransferService: Server created on tolfedor:41107
+19/12/23 00:42:10 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+19/12/23 00:42:10 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, tolfedor, 41107, None)
+19/12/23 00:42:10 INFO BlockManagerMasterEndpoint: Registering block manager tolfedor:41107 with 366.3 MB RAM, BlockManagerId(driver, tolfedor, 41107, None)
+19/12/23 00:42:10 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, tolfedor, 41107, None)
+19/12/23 00:42:10 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, tolfedor, 41107, None)
+19/12/23 00:42:11 INFO MemoryStore: Block broadcast_0 stored as values in memory (estimated size 236.7 KB, free 366.1 MB)
+19/12/23 00:42:11 INFO MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 22.9 KB, free 366.0 MB)
+19/12/23 00:42:11 INFO BlockManagerInfo: Added broadcast_0_piece0 in memory on tolfedor:41107 (size: 22.9 KB, free: 366.3 MB)
+19/12/23 00:42:11 INFO SparkContext: Created broadcast 0 from textFile at JsonReader.scala:24
 Tolyan's json megaparser! :)
 JSON name: winemag-data-130k-v2.json
-19/12/23 00:13:35 INFO FileInputFormat: Total input paths to process : 1
-19/12/23 00:13:35 INFO SparkContext: Starting job: count at JsonReader.scala:28
-19/12/23 00:13:35 INFO DAGScheduler: Got job 0 (count at JsonReader.scala:28) with 1 output partitions
-19/12/23 00:13:35 INFO DAGScheduler: Final stage: ResultStage 0 (count at JsonReader.scala:28)
-19/12/23 00:13:35 INFO DAGScheduler: Parents of final stage: List()
-19/12/23 00:13:35 INFO DAGScheduler: Missing parents: List()
-19/12/23 00:13:35 INFO DAGScheduler: Submitting ResultStage 0 (winemag-data-130k-v2.json MapPartitionsRDD[1] at textFile at JsonReader.scala:24), which has no missing parents
-19/12/23 00:13:35 INFO MemoryStore: Block broadcast_1 stored as values in memory (estimated size 3.3 KB, free 366.0 MB)
-19/12/23 00:13:35 INFO MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 2027.0 B, free 366.0 MB)
-19/12/23 00:13:35 INFO BlockManagerInfo: Added broadcast_1_piece0 in memory on tolfedor:45509 (size: 2027.0 B, free: 366.3 MB)
-19/12/23 00:13:35 INFO SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1161
-19/12/23 00:13:35 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (winemag-data-130k-v2.json MapPartitionsRDD[1] at textFile at JsonReader.scala:24) (first 15 tasks are for partitions Vector(0))
-19/12/23 00:13:35 INFO TaskSchedulerImpl: Adding task set 0.0 with 1 tasks
-19/12/23 00:13:35 INFO TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, localhost, executor driver, partition 0, PROCESS_LOCAL, 7936 bytes)
-19/12/23 00:13:35 INFO Executor: Running task 0.0 in stage 0.0 (TID 0)
-19/12/23 00:13:35 INFO Executor: Fetching spark://tolfedor:36701/jars/otusde201911hex5-assembly-1.jar with timestamp 1577052813597
-19/12/23 00:13:35 INFO TransportClientFactory: Successfully created connection to tolfedor/192.168.1.102:36701 after 61 ms (0 ms spent in bootstraps)
-19/12/23 00:13:35 INFO Utils: Fetching spark://tolfedor:36701/jars/otusde201911hex5-assembly-1.jar to /tmp/spark-477947d8-f2b0-42a7-b754-d3d18ecb9156/userFiles-cbc39694-a635-40d3-b8a0-eb4f9d1dfc65/fetchFileTemp7985985244428594163.tmp
-19/12/23 00:13:35 INFO Executor: Adding file:/tmp/spark-477947d8-f2b0-42a7-b754-d3d18ecb9156/userFiles-cbc39694-a635-40d3-b8a0-eb4f9d1dfc65/otusde201911hex5-assembly-1.jar to class loader
-19/12/23 00:13:35 INFO HadoopRDD: Input split: file:/home/tolic/tol/work/tempwrk/otusde201911hex5/winemag-data-130k-v2.json:0+21829157
-19/12/23 00:13:36 INFO Executor: Finished task 0.0 in stage 0.0 (TID 0). 918 bytes result sent to driver
-19/12/23 00:13:36 INFO TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 673 ms on localhost (executor driver) (1/1)
-19/12/23 00:13:36 INFO TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
-19/12/23 00:13:36 INFO DAGScheduler: ResultStage 0 (count at JsonReader.scala:28) finished in 0.859 s
-19/12/23 00:13:36 INFO DAGScheduler: Job 0 finished: count at JsonReader.scala:28, took 1.001030 s
+19/12/23 00:42:11 INFO FileInputFormat: Total input paths to process : 1
+19/12/23 00:42:11 INFO SparkContext: Starting job: count at JsonReader.scala:28
+19/12/23 00:42:11 INFO DAGScheduler: Got job 0 (count at JsonReader.scala:28) with 1 output partitions
+19/12/23 00:42:11 INFO DAGScheduler: Final stage: ResultStage 0 (count at JsonReader.scala:28)
+19/12/23 00:42:11 INFO DAGScheduler: Parents of final stage: List()
+19/12/23 00:42:11 INFO DAGScheduler: Missing parents: List()
+19/12/23 00:42:11 INFO DAGScheduler: Submitting ResultStage 0 (winemag-data-130k-v2.json MapPartitionsRDD[1] at textFile at JsonReader.scala:24), which has no missing parents
+19/12/23 00:42:12 INFO MemoryStore: Block broadcast_1 stored as values in memory (estimated size 3.3 KB, free 366.0 MB)
+19/12/23 00:42:12 INFO MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 2027.0 B, free 366.0 MB)
+19/12/23 00:42:12 INFO BlockManagerInfo: Added broadcast_1_piece0 in memory on tolfedor:41107 (size: 2027.0 B, free: 366.3 MB)
+19/12/23 00:42:12 INFO SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1161
+19/12/23 00:42:12 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (winemag-data-130k-v2.json MapPartitionsRDD[1] at textFile at JsonReader.scala:24) (first 15 tasks are for partitions Vector(0))
+19/12/23 00:42:12 INFO TaskSchedulerImpl: Adding task set 0.0 with 1 tasks
+19/12/23 00:42:12 INFO TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, localhost, executor driver, partition 0, PROCESS_LOCAL, 7936 bytes)
+19/12/23 00:42:12 INFO Executor: Running task 0.0 in stage 0.0 (TID 0)
+19/12/23 00:42:12 INFO Executor: Fetching spark://tolfedor:43637/jars/otusde201911hex5-assembly-1.jar with timestamp 1577054530183
+19/12/23 00:42:12 INFO TransportClientFactory: Successfully created connection to tolfedor/192.168.1.102:43637 after 63 ms (0 ms spent in bootstraps)
+19/12/23 00:42:12 INFO Utils: Fetching spark://tolfedor:43637/jars/otusde201911hex5-assembly-1.jar to /tmp/spark-6fc7e383-36ca-4d8e-9a0a-c97ca3356977/userFiles-a6663d4d-9e63-49e4-87f4-521eec23cc9a/fetchFileTemp7468233698667244076.tmp
+19/12/23 00:42:12 INFO Executor: Adding file:/tmp/spark-6fc7e383-36ca-4d8e-9a0a-c97ca3356977/userFiles-a6663d4d-9e63-49e4-87f4-521eec23cc9a/otusde201911hex5-assembly-1.jar to class loader
+19/12/23 00:42:12 INFO HadoopRDD: Input split: file:/home/tolic/tol/work/tempwrk/otusde201911hex5/winemag-data-130k-v2.json:0+21829157
+19/12/23 00:42:12 INFO Executor: Finished task 0.0 in stage 0.0 (TID 0). 918 bytes result sent to driver
+19/12/23 00:42:12 INFO TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 719 ms on localhost (executor driver) (1/1)
+19/12/23 00:42:12 INFO TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
+19/12/23 00:42:12 INFO DAGScheduler: ResultStage 0 (count at JsonReader.scala:28) finished in 0.933 s
+19/12/23 00:42:13 INFO DAGScheduler: Job 0 finished: count at JsonReader.scala:28, took 1.075381 s
 JSON RDD count: 129975
-19/12/23 00:13:36 INFO SparkContext: Starting job: foreach at JsonReader.scala:34
-19/12/23 00:13:36 INFO DAGScheduler: Got job 1 (foreach at JsonReader.scala:34) with 1 output partitions
-19/12/23 00:13:36 INFO DAGScheduler: Final stage: ResultStage 1 (foreach at JsonReader.scala:34)
-19/12/23 00:13:36 INFO DAGScheduler: Parents of final stage: List()
-19/12/23 00:13:36 INFO DAGScheduler: Missing parents: List()
-19/12/23 00:13:36 INFO DAGScheduler: Submitting ResultStage 1 (winemag-data-130k-v2.json MapPartitionsRDD[1] at textFile at JsonReader.scala:24), which has no missing parents
-19/12/23 00:13:36 INFO MemoryStore: Block broadcast_2 stored as values in memory (estimated size 3.4 KB, free 366.0 MB)
-19/12/23 00:13:36 INFO MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 2.1 KB, free 366.0 MB)
-19/12/23 00:13:36 INFO BlockManagerInfo: Added broadcast_2_piece0 in memory on tolfedor:45509 (size: 2.1 KB, free: 366.3 MB)
-19/12/23 00:13:36 INFO SparkContext: Created broadcast 2 from broadcast at DAGScheduler.scala:1161
-19/12/23 00:13:36 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (winemag-data-130k-v2.json MapPartitionsRDD[1] at textFile at JsonReader.scala:24) (first 15 tasks are for partitions Vector(0))
-19/12/23 00:13:36 INFO TaskSchedulerImpl: Adding task set 1.0 with 1 tasks
-19/12/23 00:13:36 INFO TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1, localhost, executor driver, partition 0, PROCESS_LOCAL, 7936 bytes)
-19/12/23 00:13:36 INFO Executor: Running task 0.0 in stage 1.0 (TID 1)
-19/12/23 00:13:36 INFO HadoopRDD: Input split: file:/home/tolic/tol/work/tempwrk/otusde201911hex5/winemag-data-130k-v2.json:0+21829157
+19/12/23 00:42:13 INFO SparkContext: Starting job: foreach at JsonReader.scala:34
+19/12/23 00:42:13 INFO DAGScheduler: Got job 1 (foreach at JsonReader.scala:34) with 1 output partitions
+19/12/23 00:42:13 INFO DAGScheduler: Final stage: ResultStage 1 (foreach at JsonReader.scala:34)
+19/12/23 00:42:13 INFO DAGScheduler: Parents of final stage: List()
+19/12/23 00:42:13 INFO DAGScheduler: Missing parents: List()
+19/12/23 00:42:13 INFO DAGScheduler: Submitting ResultStage 1 (winemag-data-130k-v2.json MapPartitionsRDD[1] at textFile at JsonReader.scala:24), which has no missing parents
+19/12/23 00:42:13 INFO MemoryStore: Block broadcast_2 stored as values in memory (estimated size 3.4 KB, free 366.0 MB)
+19/12/23 00:42:13 INFO MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 2.1 KB, free 366.0 MB)
+19/12/23 00:42:13 INFO BlockManagerInfo: Added broadcast_2_piece0 in memory on tolfedor:41107 (size: 2.1 KB, free: 366.3 MB)
+19/12/23 00:42:13 INFO SparkContext: Created broadcast 2 from broadcast at DAGScheduler.scala:1161
+19/12/23 00:42:13 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (winemag-data-130k-v2.json MapPartitionsRDD[1] at textFile at JsonReader.scala:24) (first 15 tasks are for partitions Vector(0))
+19/12/23 00:42:13 INFO TaskSchedulerImpl: Adding task set 1.0 with 1 tasks
+19/12/23 00:42:13 INFO TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1, localhost, executor driver, partition 0, PROCESS_LOCAL, 7936 bytes)
+19/12/23 00:42:13 INFO Executor: Running task 0.0 in stage 1.0 (TID 1)
+19/12/23 00:42:13 INFO HadoopRDD: Input split: file:/home/tolic/tol/work/tempwrk/otusde201911hex5/winemag-data-130k-v2.json:0+21829157
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 2
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 16
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 14
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 1
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 9
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 20
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 22
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 13
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 7
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 18
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 21
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 15
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 19
+19/12/23 00:42:13 INFO BlockManagerInfo: Removed broadcast_1_piece0 on tolfedor:41107 in memory (size: 2027.0 B, free: 366.3 MB)
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 6
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 5
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 4
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 17
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 12
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 0
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 10
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 11
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 23
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 3
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 24
+19/12/23 00:42:13 INFO ContextCleaner: Cleaned accumulator 8
 ===================================================
 Бухло # 0
   гнали в Italy
@@ -134,32 +184,6 @@ JSON RDD count: 129975
   вид бухла Pinot Noir
   из бочки Henriet-Bazin
 
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 4
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 17
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 12
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 0
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 10
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 11
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 23
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 3
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 24
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 8
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 2
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 16
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 14
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 1
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 9
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 20
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 22
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 13
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 7
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 18
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 21
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 15
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 19
-19/12/23 00:13:37 INFO BlockManagerInfo: Removed broadcast_1_piece0 on tolfedor:45509 in memory (size: 2027.0 B, free: 366.3 MB)
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 6
-19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 5
 ===================================================
 Бухло # 20000
   гнали в US
@@ -259,21 +283,20 @@ JSON RDD count: 129975
   вид бухла Pinot Noir
   из бочки Morgan
 
-19/12/23 00:13:39 INFO Executor: Finished task 0.0 in stage 1.0 (TID 1). 880 bytes result sent to driver
-19/12/23 00:13:39 INFO TaskSetManager: Finished task 0.0 in stage 1.0 (TID 1) in 2785 ms on localhost (executor driver) (1/1)
-19/12/23 00:13:39 INFO TaskSchedulerImpl: Removed TaskSet 1.0, whose tasks have all completed, from pool
-19/12/23 00:13:39 INFO DAGScheduler: ResultStage 1 (foreach at JsonReader.scala:34) finished in 2.802 s
-19/12/23 00:13:39 INFO DAGScheduler: Job 1 finished: foreach at JsonReader.scala:34, took 2.809429 s
-19/12/23 00:13:39 INFO SparkContext: Invoking stop() from shutdown hook
-19/12/23 00:13:39 INFO SparkUI: Stopped Spark web UI at http://tolfedor:4040
-19/12/23 00:13:39 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
-19/12/23 00:13:39 INFO MemoryStore: MemoryStore cleared
-19/12/23 00:13:39 INFO BlockManager: BlockManager stopped
-19/12/23 00:13:39 INFO BlockManagerMaster: BlockManagerMaster stopped
-19/12/23 00:13:39 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
-19/12/23 00:13:39 INFO SparkContext: Successfully stopped SparkContext
-19/12/23 00:13:39 INFO ShutdownHookManager: Shutdown hook called
-19/12/23 00:13:39 INFO ShutdownHookManager: Deleting directory /tmp/spark-a8262b71-4073-4727-9e5a-6043d59344d5
-19/12/23 00:13:39 INFO ShutdownHookManager: Deleting directory /tmp/spark-477947d8-f2b0-42a7-b754-d3d18ecb9156
-[tolic@tolfedor otusde201911hex5]$
+19/12/23 00:42:15 INFO Executor: Finished task 0.0 in stage 1.0 (TID 1). 837 bytes result sent to driver
+19/12/23 00:42:15 INFO TaskSetManager: Finished task 0.0 in stage 1.0 (TID 1) in 2627 ms on localhost (executor driver) (1/1)
+19/12/23 00:42:15 INFO TaskSchedulerImpl: Removed TaskSet 1.0, whose tasks have all completed, from pool
+19/12/23 00:42:15 INFO DAGScheduler: ResultStage 1 (foreach at JsonReader.scala:34) finished in 2.665 s
+19/12/23 00:42:15 INFO DAGScheduler: Job 1 finished: foreach at JsonReader.scala:34, took 2.669958 s
+19/12/23 00:42:15 INFO SparkContext: Invoking stop() from shutdown hook
+19/12/23 00:42:15 INFO SparkUI: Stopped Spark web UI at http://tolfedor:4040
+19/12/23 00:42:15 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+19/12/23 00:42:15 INFO MemoryStore: MemoryStore cleared
+19/12/23 00:42:15 INFO BlockManager: BlockManager stopped
+19/12/23 00:42:15 INFO BlockManagerMaster: BlockManagerMaster stopped
+19/12/23 00:42:15 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+19/12/23 00:42:15 INFO SparkContext: Successfully stopped SparkContext
+19/12/23 00:42:15 INFO ShutdownHookManager: Shutdown hook called
+19/12/23 00:42:15 INFO ShutdownHookManager: Deleting directory /tmp/spark-f39545ec-f0a9-495c-a62b-5d1bca2d367f
+19/12/23 00:42:15 INFO ShutdownHookManager: Deleting directory /tmp/spark-6fc7e383-36ca-4d8e-9a0a-c97ca3356977
 ----
