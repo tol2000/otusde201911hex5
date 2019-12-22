@@ -1,0 +1,277 @@
+= ДЗ №5
+
+== Преамбула
+
+Проект из шаблона `MrPowers/spark-sbt.g8` у меня работать в интелли идеа не захотел,
+я решил создать новый и перенести туда некоторые настройки build.sbt
+
+== Описание
+
+* Создал пустой sbt-проект в intellij idea
+* Настроил build.sbt, добавил зависимости
+* Написал класс и запустил его в интелли идеа
+* После долгих мытарств с sbt командной строкой настроил также assembly.sbt
+* Собрал таки fat jar при помощи sbt assembly
+* Скачал спарк 2
+* Запустил джарник из спарка по инструкции
+
+== Примечания автора
+
+* Не нашел, где меняется режим логгирования, чтобы убрать строки INFO, +
+  вручную я их не убирал, может несут для вас какую-то полезную нагрузку :) +
+  В итоге, среди этих строк можно увидеть вывод моего джарника :)
+* Вывел только те id товара, которые кратны 10000, чтобы не было слишком много. +
+  Но обработаны были абсолютно все записи, т.к. там, я понял, были ловушки +
+  вроде отсутствия многих полей и даже поля id, пришлось делать типы Option :)
+
+== Результат
+
+[source, bash]
+----
+[tolic@tolfedor otusde201911hex5]$ pwd
+/home/tolic/tol/work/tempwrk/otusde201911hex5
+[tolic@tolfedor otusde201911hex5]$ ll
+total 26968
+-rw-rw-r--. 1 tolic tolic      724 Dec 23 00:02 build.sbt
+-rw-rw-r--. 1 tolic tolic  5766714 Dec 23 00:03 otusde201911hex5-assembly-1.jar
+drwxrwxr-x. 4 tolic tolic     4096 Dec 23 00:03 project
+drwxrwxr-x. 3 tolic tolic     4096 Dec 23 00:02 src
+drwxrwxr-x. 4 tolic tolic     4096 Dec 23 00:08 target
+-rw-rw-r--. 1 tolic tolic 21829157 Dec 23 00:02 winemag-data-130k-v2.json
+[tolic@tolfedor otusde201911hex5]$ ~/spark-2.4.4-bin-hadoop2.7/bin/spark-submit --master local[*] --class org.kliusa.otusde201911hex5.jsonreader.JsonReader otusde201911hex5-assembly-1.jar winemag-data-130k-v2.json
+19/12/23 00:13:32 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+19/12/23 00:13:32 INFO SparkContext: Running Spark version 2.4.4
+19/12/23 00:13:32 INFO SparkContext: Submitted application: org.kliusa.otusde201911hex5.jsonreader.JsonReader
+19/12/23 00:13:32 INFO SecurityManager: Changing view acls to: tolic
+19/12/23 00:13:32 INFO SecurityManager: Changing modify acls to: tolic
+19/12/23 00:13:32 INFO SecurityManager: Changing view acls groups to:
+19/12/23 00:13:32 INFO SecurityManager: Changing modify acls groups to:
+19/12/23 00:13:32 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(tolic); groups with view permissions: Set(); users  with modify permissions: Set(tolic); groups with modify permissions: Set()
+19/12/23 00:13:33 INFO Utils: Successfully started service 'sparkDriver' on port 36701.
+19/12/23 00:13:33 INFO SparkEnv: Registering MapOutputTracker
+19/12/23 00:13:33 INFO SparkEnv: Registering BlockManagerMaster
+19/12/23 00:13:33 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+19/12/23 00:13:33 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+19/12/23 00:13:33 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-5e583cf0-cafb-41f7-9aea-1cb89c77d76f
+19/12/23 00:13:33 INFO MemoryStore: MemoryStore started with capacity 366.3 MB
+19/12/23 00:13:33 INFO SparkEnv: Registering OutputCommitCoordinator
+19/12/23 00:13:33 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+19/12/23 00:13:33 INFO SparkUI: Bound SparkUI to 0.0.0.0, and started at http://tolfedor:4040
+19/12/23 00:13:33 INFO SparkContext: Added JAR file:/home/tolic/tol/work/tempwrk/otusde201911hex5/otusde201911hex5-assembly-1.jar at spark://tolfedor:36701/jars/otusde201911hex5-assembly-1.jar with timestamp 1577052813597
+19/12/23 00:13:33 INFO Executor: Starting executor ID driver on host localhost
+19/12/23 00:13:33 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 45509.
+19/12/23 00:13:33 INFO NettyBlockTransferService: Server created on tolfedor:45509
+19/12/23 00:13:33 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+19/12/23 00:13:33 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, tolfedor, 45509, None)
+19/12/23 00:13:33 INFO BlockManagerMasterEndpoint: Registering block manager tolfedor:45509 with 366.3 MB RAM, BlockManagerId(driver, tolfedor, 45509, None)
+19/12/23 00:13:33 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, tolfedor, 45509, None)
+19/12/23 00:13:33 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, tolfedor, 45509, None)
+19/12/23 00:13:34 INFO MemoryStore: Block broadcast_0 stored as values in memory (estimated size 236.7 KB, free 366.1 MB)
+19/12/23 00:13:35 INFO MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 22.9 KB, free 366.0 MB)
+19/12/23 00:13:35 INFO BlockManagerInfo: Added broadcast_0_piece0 in memory on tolfedor:45509 (size: 22.9 KB, free: 366.3 MB)
+19/12/23 00:13:35 INFO SparkContext: Created broadcast 0 from textFile at JsonReader.scala:24
+Tolyan's json megaparser! :)
+JSON name: winemag-data-130k-v2.json
+19/12/23 00:13:35 INFO FileInputFormat: Total input paths to process : 1
+19/12/23 00:13:35 INFO SparkContext: Starting job: count at JsonReader.scala:28
+19/12/23 00:13:35 INFO DAGScheduler: Got job 0 (count at JsonReader.scala:28) with 1 output partitions
+19/12/23 00:13:35 INFO DAGScheduler: Final stage: ResultStage 0 (count at JsonReader.scala:28)
+19/12/23 00:13:35 INFO DAGScheduler: Parents of final stage: List()
+19/12/23 00:13:35 INFO DAGScheduler: Missing parents: List()
+19/12/23 00:13:35 INFO DAGScheduler: Submitting ResultStage 0 (winemag-data-130k-v2.json MapPartitionsRDD[1] at textFile at JsonReader.scala:24), which has no missing parents
+19/12/23 00:13:35 INFO MemoryStore: Block broadcast_1 stored as values in memory (estimated size 3.3 KB, free 366.0 MB)
+19/12/23 00:13:35 INFO MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 2027.0 B, free 366.0 MB)
+19/12/23 00:13:35 INFO BlockManagerInfo: Added broadcast_1_piece0 in memory on tolfedor:45509 (size: 2027.0 B, free: 366.3 MB)
+19/12/23 00:13:35 INFO SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1161
+19/12/23 00:13:35 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (winemag-data-130k-v2.json MapPartitionsRDD[1] at textFile at JsonReader.scala:24) (first 15 tasks are for partitions Vector(0))
+19/12/23 00:13:35 INFO TaskSchedulerImpl: Adding task set 0.0 with 1 tasks
+19/12/23 00:13:35 INFO TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, localhost, executor driver, partition 0, PROCESS_LOCAL, 7936 bytes)
+19/12/23 00:13:35 INFO Executor: Running task 0.0 in stage 0.0 (TID 0)
+19/12/23 00:13:35 INFO Executor: Fetching spark://tolfedor:36701/jars/otusde201911hex5-assembly-1.jar with timestamp 1577052813597
+19/12/23 00:13:35 INFO TransportClientFactory: Successfully created connection to tolfedor/192.168.1.102:36701 after 61 ms (0 ms spent in bootstraps)
+19/12/23 00:13:35 INFO Utils: Fetching spark://tolfedor:36701/jars/otusde201911hex5-assembly-1.jar to /tmp/spark-477947d8-f2b0-42a7-b754-d3d18ecb9156/userFiles-cbc39694-a635-40d3-b8a0-eb4f9d1dfc65/fetchFileTemp7985985244428594163.tmp
+19/12/23 00:13:35 INFO Executor: Adding file:/tmp/spark-477947d8-f2b0-42a7-b754-d3d18ecb9156/userFiles-cbc39694-a635-40d3-b8a0-eb4f9d1dfc65/otusde201911hex5-assembly-1.jar to class loader
+19/12/23 00:13:35 INFO HadoopRDD: Input split: file:/home/tolic/tol/work/tempwrk/otusde201911hex5/winemag-data-130k-v2.json:0+21829157
+19/12/23 00:13:36 INFO Executor: Finished task 0.0 in stage 0.0 (TID 0). 918 bytes result sent to driver
+19/12/23 00:13:36 INFO TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 673 ms on localhost (executor driver) (1/1)
+19/12/23 00:13:36 INFO TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool
+19/12/23 00:13:36 INFO DAGScheduler: ResultStage 0 (count at JsonReader.scala:28) finished in 0.859 s
+19/12/23 00:13:36 INFO DAGScheduler: Job 0 finished: count at JsonReader.scala:28, took 1.001030 s
+JSON RDD count: 129975
+19/12/23 00:13:36 INFO SparkContext: Starting job: foreach at JsonReader.scala:34
+19/12/23 00:13:36 INFO DAGScheduler: Got job 1 (foreach at JsonReader.scala:34) with 1 output partitions
+19/12/23 00:13:36 INFO DAGScheduler: Final stage: ResultStage 1 (foreach at JsonReader.scala:34)
+19/12/23 00:13:36 INFO DAGScheduler: Parents of final stage: List()
+19/12/23 00:13:36 INFO DAGScheduler: Missing parents: List()
+19/12/23 00:13:36 INFO DAGScheduler: Submitting ResultStage 1 (winemag-data-130k-v2.json MapPartitionsRDD[1] at textFile at JsonReader.scala:24), which has no missing parents
+19/12/23 00:13:36 INFO MemoryStore: Block broadcast_2 stored as values in memory (estimated size 3.4 KB, free 366.0 MB)
+19/12/23 00:13:36 INFO MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 2.1 KB, free 366.0 MB)
+19/12/23 00:13:36 INFO BlockManagerInfo: Added broadcast_2_piece0 in memory on tolfedor:45509 (size: 2.1 KB, free: 366.3 MB)
+19/12/23 00:13:36 INFO SparkContext: Created broadcast 2 from broadcast at DAGScheduler.scala:1161
+19/12/23 00:13:36 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (winemag-data-130k-v2.json MapPartitionsRDD[1] at textFile at JsonReader.scala:24) (first 15 tasks are for partitions Vector(0))
+19/12/23 00:13:36 INFO TaskSchedulerImpl: Adding task set 1.0 with 1 tasks
+19/12/23 00:13:36 INFO TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1, localhost, executor driver, partition 0, PROCESS_LOCAL, 7936 bytes)
+19/12/23 00:13:36 INFO Executor: Running task 0.0 in stage 1.0 (TID 1)
+19/12/23 00:13:36 INFO HadoopRDD: Input split: file:/home/tolic/tol/work/tempwrk/otusde201911hex5/winemag-data-130k-v2.json:0+21829157
+===================================================
+Бухло # 0
+  гнали в Italy
+  набрал 87 лайков
+  барыжат за ХЗ
+  трезвые произносят как Nicosia 2013 Vulkà Bianco  (Etna)
+  вид бухла White Blend
+  из бочки Nicosia
+
+===================================================
+Бухло # 10000
+  гнали в France
+  набрал 91 лайков
+  барыжат за ХЗ
+  трезвые произносят как Henriet-Bazin NV Blanc de Noirs Grand Cru Brut Pinot Noir (Champagne)
+  вид бухла Pinot Noir
+  из бочки Henriet-Bazin
+
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 4
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 17
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 12
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 0
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 10
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 11
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 23
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 3
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 24
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 8
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 2
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 16
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 14
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 1
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 9
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 20
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 22
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 13
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 7
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 18
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 21
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 15
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 19
+19/12/23 00:13:37 INFO BlockManagerInfo: Removed broadcast_1_piece0 on tolfedor:45509 in memory (size: 2027.0 B, free: 366.3 MB)
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 6
+19/12/23 00:13:37 INFO ContextCleaner: Cleaned accumulator 5
+===================================================
+Бухло # 20000
+  гнали в US
+  набрал 87 лайков
+  барыжат за 25.0
+  трезвые произносят как Buena Vista 2005 Syrah (Carneros)
+  вид бухла Syrah
+  из бочки Buena Vista
+
+===================================================
+Бухло # 30000
+  гнали в Austria
+  набрал 91 лайков
+  барыжат за 40.0
+  трезвые произносят как Stadt Krems 2014 Ried Grillenparz Reserve Riesling (Kremstal)
+  вид бухла Riesling
+  из бочки Stadt Krems
+
+===================================================
+Бухло # 40000
+  гнали в Portugal
+  набрал 87 лайков
+  барыжат за 9.0
+  трезвые произносят как DFJ Vinhos 2013 Pedras do Monte Red (Lisboa)
+  вид бухла Portuguese Red
+  из бочки DFJ Vinhos
+
+===================================================
+Бухло # 50000
+  гнали в Italy
+  набрал 90 лайков
+  барыжат за ХЗ
+  трезвые произносят как Alpha Zeta 2006  Amarone della Valpolicella
+  вид бухла Corvina, Rondinella, Molinara
+  из бочки Alpha Zeta
+
+===================================================
+Бухло # 60000
+  гнали в France
+  набрал 95 лайков
+  барыжат за 85.0
+  трезвые произносят как Hugel 2011 Grossi Laüe Riesling (Alsace)
+  вид бухла Riesling
+  из бочки Hugel
+
+===================================================
+Бухло # 70000
+  гнали в Italy
+  набрал 87 лайков
+  барыжат за 55.0
+  трезвые произносят как Ricci Curbastro NV Brut Rosé Sparkling (Franciacorta)
+  вид бухла Sparkling Blend
+  из бочки Ricci Curbastro
+
+===================================================
+Бухло # 80000
+  гнали в Germany
+  набрал 91 лайков
+  барыжат за 20.0
+  трезвые произносят как Thörle 2011 Trocken Spätburgunder (Rheinhessen)
+  вид бухла Spätburgunder
+  из бочки Thörle
+
+===================================================
+Бухло # 90000
+  гнали в Italy
+  набрал 87 лайков
+  барыжат за 18.0
+  трезвые произносят как Monte Schiavo 2012 Pallio di San Floriano  (Verdicchio dei Castelli di Jesi Classico Superiore)
+  вид бухла Verdicchio
+  из бочки Monte Schiavo
+
+===================================================
+Бухло # 100000
+  гнали в US
+  набрал 89 лайков
+  барыжат за 70.0
+  трезвые произносят как Caymus 1998 Cabernet Sauvignon (Napa Valley)
+  вид бухла Cabernet Sauvignon
+  из бочки Caymus
+
+===================================================
+Бухло # 110000
+  гнали в Australia
+  набрал 88 лайков
+  барыжат за 17.0
+  трезвые произносят как Bleasdale 2014 The Broad-side Red (Langhorne Creek)
+  вид бухла Red Blend
+  из бочки Bleasdale
+
+===================================================
+Бухло # 120000
+  гнали в US
+  набрал 92 лайков
+  барыжат за 58.0
+  трезвые произносят как Morgan 2013 Garys Vineyard Pinot Noir (Santa Lucia Highlands)
+  вид бухла Pinot Noir
+  из бочки Morgan
+
+19/12/23 00:13:39 INFO Executor: Finished task 0.0 in stage 1.0 (TID 1). 880 bytes result sent to driver
+19/12/23 00:13:39 INFO TaskSetManager: Finished task 0.0 in stage 1.0 (TID 1) in 2785 ms on localhost (executor driver) (1/1)
+19/12/23 00:13:39 INFO TaskSchedulerImpl: Removed TaskSet 1.0, whose tasks have all completed, from pool
+19/12/23 00:13:39 INFO DAGScheduler: ResultStage 1 (foreach at JsonReader.scala:34) finished in 2.802 s
+19/12/23 00:13:39 INFO DAGScheduler: Job 1 finished: foreach at JsonReader.scala:34, took 2.809429 s
+19/12/23 00:13:39 INFO SparkContext: Invoking stop() from shutdown hook
+19/12/23 00:13:39 INFO SparkUI: Stopped Spark web UI at http://tolfedor:4040
+19/12/23 00:13:39 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+19/12/23 00:13:39 INFO MemoryStore: MemoryStore cleared
+19/12/23 00:13:39 INFO BlockManager: BlockManager stopped
+19/12/23 00:13:39 INFO BlockManagerMaster: BlockManagerMaster stopped
+19/12/23 00:13:39 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+19/12/23 00:13:39 INFO SparkContext: Successfully stopped SparkContext
+19/12/23 00:13:39 INFO ShutdownHookManager: Shutdown hook called
+19/12/23 00:13:39 INFO ShutdownHookManager: Deleting directory /tmp/spark-a8262b71-4073-4727-9e5a-6043d59344d5
+19/12/23 00:13:39 INFO ShutdownHookManager: Deleting directory /tmp/spark-477947d8-f2b0-42a7-b754-d3d18ecb9156
+[tolic@tolfedor otusde201911hex5]$
+----
